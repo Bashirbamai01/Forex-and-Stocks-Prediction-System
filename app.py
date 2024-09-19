@@ -19,7 +19,7 @@ from sklearn.metrics import r2_score, mean_absolute_error
 
 st.title('PROJECT: FOREX AND STOCKS PRICE PREDICTION SYSTEM USING TIME SERIES ALGORITHM')
 st.sidebar.info("By: BASHIR BAMAI")
-st.sidebar.info("Supervisor: DR MABU")
+st.sidebar.info("Supervisor: MB")
 st.sidebar.info("DATASET: YAHOO FINANCE")
 
 st.sidebar.info('Choose your options below')
