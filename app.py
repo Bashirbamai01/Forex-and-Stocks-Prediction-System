@@ -27,7 +27,7 @@ st.sidebar.info('Choose your options below')
 def main():
     option = st.sidebar.selectbox('Make a choice', ['Recent Data', 'Predict'])
     if option == 'Visualize':
-        # tech_indicators()
+        tech_indicators()
     elif option == 'Recent Data':
         dataframe()
     else:
