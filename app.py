@@ -119,37 +119,50 @@ def predict():
     if st.button('Predict'):
         engine = RandomForestRegressor()
         model_engine(engine, num)
-
 def model_engine(model, num):
-    # getting only the closing price
-    df = data[['Close']]
-    # shifting the closing price based on number of days forecast
-    df['preds'] = data.Close.shift(-num)
-    # scaling the data
-    x = df.drop(['preds'], axis=1).values
+    # Getting only the closing price
+    df = data[['Close']].copy()
+    
+    # Shifting the closing price based on number of days forecast
+    df['preds'] = df['Close'].shift(-num)
+
+    # Dropping rows with NaN values
+    df.dropna(inplace=True)
+
+    # Scaling the data
+    x = df[['Close']].values  # Use only the 'Close' column
     x = scaler.fit_transform(x)
-    # storing the last num_days data
+
+    # Storing the last num_days data for forecasting
     x_forecast = x[-num:]
-    # selecting the required values for training
+
+    # Selecting the required values for training
     x = x[:-num]
-    # getting the preds column
-    y = df.preds.values
-    # selecting the required values for training
+    
+    # Getting the preds column
+    y = df['preds'].values
     y = y[:-num]
 
-    #spliting the data
+    # Splitting the data
     x_train, x_test, y_train, y_test = train_test_split(x, y, test_size=.2, random_state=7)
-    # training the model
+
+    # Training the model
     model.fit(x_train, y_train)
+    
+    # Making predictions
     preds = model.predict(x_test)
+
+    # Displaying metrics
     st.text(f'r2_score: {r2_score(y_test, preds)} \
             \nMAE: {mean_absolute_error(y_test, preds)}')
-    # predicting stock price based on the number of days
+    
+    # Predicting stock price based on the number of days
     forecast_pred = model.predict(x_forecast)
     day = 1
     for i in forecast_pred:
         st.text(f'Day {day}: {i}')
         day += 1
+
 
 
 if __name__ == '__main__':
